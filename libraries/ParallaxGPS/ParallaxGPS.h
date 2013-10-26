@@ -9,16 +9,15 @@
 class ParallaxGPS
 {
 	public:
-		ParallaxGPS(int rx, int tx,TinyGPSPlus& tgps);
+		ParallaxGPS(int rx, int tx);
 		void start();
-		void encode();
+		void encode(TinyGPSPlus& tgps);
 		String generateAPRSPacket();
 	private:
 		int _pin;
 		SoftwareSerial _s;
 		int _rx;
 		int _tx;
-		TinyGPSPlus& _tgps;
 
 };
 

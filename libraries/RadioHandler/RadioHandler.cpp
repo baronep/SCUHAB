@@ -3,8 +3,8 @@
 #include "String.h"
 #include <SoftwareSerial.h>
 
-RadioHandler::RadioHandler(int rx, int tx,TinyGPSPlus& tgps):
-	_s(rx,tx), _tgps(tgps)
+RadioHandler::RadioHandler(int rx, int tx):
+	_s(rx,tx)//, _tgps(tgps)
 {
 	pinMode(rx,INPUT);  //INPUT FOR SOFTWARE SERIAL PORT 10
 	pinMode(tx,OUTPUT);
@@ -35,26 +35,26 @@ void RadioHandler::sendGPS(double longitude, double latitude)
 	sendMessage(message);
 }
 
-String RadioHandler::generateAPRSPacket()
+String RadioHandler::generateAPRSPacket(TinyGPSPlus& tgps)
 { 
   String APRSString="";
   
-  char APRS_Lon[15];
-  char APRS_Lat[15];
-  char APRS_Course[15];
-  char APRS_Speed[15];
-  char APRS_Altitude[15];
+  char APRS_Lon[10];
+  char APRS_Lat[10];
+  char APRS_Course[10];
+  char APRS_Speed[10];
+  char APRS_Altitude[10];
 
-  dtostrf(_tgps.location.lng(),1,1,APRS_Lon);
-  dtostrf(_tgps.location.lat(),1,1,APRS_Lat);
-  dtostrf(_tgps.course.deg(),1,1,APRS_Course);
-  dtostrf(_tgps.speed.mps(),1,1,APRS_Speed);
-  dtostrf(_tgps.altitude.meters(),1,1,APRS_Altitude);
+  dtostrf(tgps.location.lng(),1,1,APRS_Lon);
+  dtostrf(tgps.location.lat(),1,1,APRS_Lat);
+  dtostrf(tgps.course.deg(),1,1,APRS_Course);
+  dtostrf(tgps.speed.mps(),1,1,APRS_Speed);
+  dtostrf(tgps.altitude.meters(),1,1,APRS_Altitude);
   
   //format:   @DDHHMM/DDMM.hhN/DDDMM.hhW$CSE/SPD/comments...
-  APRSString = "@" + _tgps.date.day();
-  APRSString += _tgps.time.hour();
-  APRSString += _tgps.time.minute();
+  APRSString = "!" + tgps.date.day();
+  APRSString += tgps.time.hour();
+  APRSString += tgps.time.minute();
   APRSString += "/";
   APRSString += APRS_Lon;
   APRSString += "N/";
@@ -69,23 +69,10 @@ String RadioHandler::generateAPRSPacket()
   return APRSString;
 }
 
-String RadioHandler::sendPOSIT(){
-	String packet = generateAPRSPacket();
+String RadioHandler::sendPOSIT(TinyGPSPlus& tgps){
+	String packet = generateAPRSPacket(tgps);
 	sendMessage(packet);
 	
 	return packet;
 	
 }
-
-String RadioHandler::getVersion() {
-	String version = "";
-	sendMessage("V");
-	delay(10);
-	while(_s.available()){
-		version += _s.read();
-	}
-	version += "\n";
-	version = "Version: " + version;
-	return version;
-}
-

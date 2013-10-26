@@ -58,6 +58,11 @@ void SDHandler::writeTemperatureAndGPS(float temp_c, int32_t pressure, TinyGPSPl
   _openedFile.println(tgps.altitude.value());
 }
 
+/*void SDHandler::writeResetLine()
+{
+	_openedFile.println("SYSTEM RESET");
+}*/
+
 void SDHandler::close(){
    if (_openedFile) {
     _openedFile.close();

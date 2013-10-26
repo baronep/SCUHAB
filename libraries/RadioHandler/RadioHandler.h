@@ -7,17 +7,15 @@
 class RadioHandler
 {
 	public:
-		RadioHandler(int rx, int tx,TinyGPSPlus& tgps);
+		RadioHandler(int rx, int tx);
 		void start(String callsign, String digipath);
 		void sendMessage(String message); 
 		void sendGPS(double longitude, double latitude);
-		String generateAPRSPacket();
-		String sendPOSIT();
-		String getVersion();
+		String generateAPRSPacket(TinyGPSPlus& tgps);
+		String sendPOSIT(TinyGPSPlus& tgps);
 	private:
 		int _pin;
 		SoftwareSerial _s;
-		TinyGPSPlus& _tgps;
 
 };
 

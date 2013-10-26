@@ -20,6 +20,8 @@ class SDHandler
 		void writeTemperature(float temp_c, int32_t pressure);
 		//Write both temperature and gps to file.
 		void writeTemperatureAndGPS(float temp_c, int32_t pressure, TinyGPSPlus& tgps);
+		//class to add a "DEVICE RESET" line every time the device is reset
+		//void writeResetLine();
 		//you need to close the file after finish writing it.
 		void close();
 	private:

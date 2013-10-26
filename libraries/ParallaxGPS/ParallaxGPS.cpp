@@ -3,8 +3,8 @@
 #include "String.h"
 #include <SoftwareSerial.h>
 
-ParallaxGPS::ParallaxGPS(int rx, int tx,TinyGPSPlus& tgps):
-	_s(rx,tx), _tgps(tgps)
+ParallaxGPS::ParallaxGPS(int rx, int tx):
+	_s(rx,tx)
 {
 	_rx = rx;
 	_tx = tx;
@@ -18,11 +18,10 @@ void ParallaxGPS::start()
 
 }
 
-void ParallaxGPS::encode()
+void ParallaxGPS::encode(TinyGPSPlus& tgps)
 {
-	while(_s.available())  //IF SERIAL DATA FROM THE GPS IS AVAILABLE
+	while(_s.available()>0)  //IF SERIAL DATA FROM THE GPS IS AVAILABLE
     {
-      _tgps.encode(_s.read());  //SEND EACH CHARACTER TO THE GPS DECODER OBJECT
+      tgps.encode(_s.read());  //SEND EACH CHARACTER TO THE GPS DECODER OBJECT
     }
 }
-
