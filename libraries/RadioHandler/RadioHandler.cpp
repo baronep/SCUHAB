@@ -76,3 +76,16 @@ String RadioHandler::sendPOSIT(){
 	return packet;
 	
 }
+
+String RadioHandler::getVersion() {
+	String version = "";
+	sendMessage("V");
+	delay(10);
+	while(_s.available()){
+		version += _s.read();
+	}
+	version += "\n";
+	version = "Version: " + version;
+	return version;
+}
+

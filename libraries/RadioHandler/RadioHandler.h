@@ -13,6 +13,7 @@ class RadioHandler
 		void sendGPS(double longitude, double latitude);
 		String generateAPRSPacket();
 		String sendPOSIT();
+		String getVersion();
 	private:
 		int _pin;
 		SoftwareSerial _s;
